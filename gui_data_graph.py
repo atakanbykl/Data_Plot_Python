@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import csv
 import re
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout, QLineEdit
 import sys
 import os
 
@@ -18,14 +18,20 @@ class MyApp(QWidget):
         layout = QVBoxLayout()
         self.setLayout(layout)
 
-        self.options = ('Get File Name', 'Save File Name')
+        # self.options = ('Get File Name', 'Save File Name')
 
-        self.combo = QComboBox()
-        self.combo.addItems(self.options)
-        layout.addWidget(self.combo)
+        # self.combo = QComboBox()
+        # self.combo.addItems(self.options)
+        # layout.addWidget(self.combo)
+
+        self.text = QLineEdit()
+        layout.addWidget(self.text)
+
 
         btn = QPushButton('Launch')
-        btn.clicked.connect(self.launchDialog)
+        # btn.clicked.connect(self.launchDialog)
+        btn.clicked.connect(self.getFilePath)
+
         layout.addWidget(btn)
 
         plotButton = QPushButton('Plot')
@@ -75,17 +81,6 @@ class MyApp(QWidget):
 
         plt.show()
 
-
-    def launchDialog(self):
-        option = self.options.index(self.combo.currentText())
-
-        if option == 0:
-            self.path = self.getFilePath()
-        # elif option == 1:
-        #     response = self.getSaveFileName()
-        else:
-            print('Got Nothing')
-
     def getFilePath(self):
         file_filter = 'Data File (*.csv)'
         response = QFileDialog.getOpenFileName(
@@ -95,8 +90,9 @@ class MyApp(QWidget):
             filter=file_filter,
             # initialFilter='Excel File (*.xlsx *.xls)'
         )
+        self.text.setText(response[0])
         print(response)
-        return response[0]
+        self.path = response[0]
 
     
     # def getSaveFileName(self):
