@@ -14,28 +14,28 @@ class MyApp(QWidget):
     def __init__(self):
         super().__init__()
 
+        # set the title
+        self.setWindowTitle("Plot data")
+        
+        # window size
         self.window_width, self.window_height = 800, 200
         self.setMinimumSize(self.window_width, self.window_height)
 
+        # set leyout
         layout = QVBoxLayout()
-        self.setLayout(layout)
+        self.setLayout(layout)       
 
-        # self.options = ('Get File Name', 'Save File Name')
+        # add layout
+        self.textBox = QLineEdit()
+        self.textBox.setGeometry(0,0,20,1000)
+        layout.addWidget(self.textBox)
 
-        # self.combo = QComboBox()
-        # self.combo.addItems(self.options)
-        # layout.addWidget(self.combo)
+        # add get path button
+        pathButton = QPushButton('Get Path')
+        pathButton.clicked.connect(self.getFilePath)
+        layout.addWidget(pathButton)
 
-        self.text = QLineEdit()
-        layout.addWidget(self.text)
-
-
-        btn = QPushButton('Launch')
-        # btn.clicked.connect(self.launchDialog)
-        btn.clicked.connect(self.getFilePath)
-
-        layout.addWidget(btn)
-
+        # add plot button
         plotButton = QPushButton('Plot')
         plotButton.clicked.connect(self.plot)
         layout.addWidget(plotButton)
