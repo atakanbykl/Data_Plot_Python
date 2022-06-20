@@ -3,56 +3,47 @@ from urllib import response
 import matplotlib.pyplot as plt
 import csv
 import re
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout, QLineEdit
+from PyQt5 import QtCore, QtGui, uic
+from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout, QLineEdit, QDialog
 import sys
 import os
 import numpy
 
 
-class MyApp(QWidget):
+# class MyApp(QWidget):
+class MyApp(QDialog):
     def __init__(self):
-        super().__init__()
+        super(MyApp, self).__init__() 
+        uic.loadUi('gui.ui', self) # Load the .ui file
+              
+        self.pathButton.clicked.connect(self.getFilePath) # get path button         
+        self.plotButton.clicked.connect(self.plot) # plot button
 
-        # set the title
-        self.setWindowTitle("Plot data")
-        
-        # window size
-        self.window_width, self.window_height = 800, 200
-        self.setMinimumSize(self.window_width, self.window_height)
+        self.show() # Show the GUI
 
-        # set layout
-        layout = QVBoxLayout()
-        self.setLayout(layout)       
-
-        # add layout
-        self.textBox = QLineEdit()
-        self.textBox.setGeometry(0,0,20,1000)
-        layout.addWidget(self.textBox)
-
-        # add get path button
-        pathButton = QPushButton('Get Path')
-        pathButton.clicked.connect(self.getFilePath)
-        layout.addWidget(pathButton)
-
-        # add plot button
-        plotButton = QPushButton('Plot')
-        plotButton.clicked.connect(self.plot)
-        layout.addWidget(plotButton)
+    def getFilePath(self):
+        file_filter = 'Data File (*.csv)'
+        response = QFileDialog.getOpenFileName(
+            parent=self,
+            caption='Select a data file',
+            directory=os.getcwd(),
+            filter=file_filter,
+        )
+        self.pathTextBox.setText(response[0])
+        self.path = response[0]
 
     def plot(self):
-        self.path = self.textBox.text()
+        self.path = self.pathTextBox.text()
         print(self.path)
         
-    # init
+        # init
         ID =[]
         angle =[] 
         angle_ma = []
         x = []
         y = []
-        ma_frame_size = 40
 
-    # read file
+        # read file
         with open(self.path,"r") as csvfile:
             lines = csv.reader(csvfile, delimiter=',')
             for row in lines:
@@ -63,16 +54,20 @@ class MyApp(QWidget):
                 angle.append(float(row[1]))
                 x.append(float(row[2]))
                 y.append(float(row[3]))
-    # moving average
-        for i in  range(len(angle)):
-            if i < ma_frame_size:
-                pass
-            else:
-                angle_ma.append(numpy.sum(angle[i - ma_frame_size : i]) / ma_frame_size)
 
-    # plots
+        # moving average
+        if self.maCheckBox.isChecked():
+            # ma_frame_size = 40
+            ma_frame_size = int(self.maTextBox.text())
+            for i in  range(len(angle)):
+                if i < ma_frame_size:
+                    pass
+                else:
+                    angle_ma.append(numpy.sum(angle[i - ma_frame_size : i]) / ma_frame_size)
+
+        # plots
         # figure 1
-        plt.figure("All Results")
+        plt.figure("All Results").canvas.manager.window.move(100,100)
         plt.subplot(4,1,1) 
         plt.plot(range(len(ID)), ID)
         plt.ylabel('QR ID')
@@ -90,7 +85,8 @@ class MyApp(QWidget):
 
         plt.subplot(4,1,4) 
         plt.plot(range(len(angle)), angle, label="raw")
-        plt.plot(range(len(angle_ma)), angle_ma, label="moving average")
+        if self.maCheckBox.isChecked():
+            plt.plot(range(len(angle_ma)), angle_ma, label="moving average")
         plt.legend(loc="upper right")
         plt.ylabel('Angle(deg)')
         plt.grid()
@@ -99,7 +95,7 @@ class MyApp(QWidget):
         plt.show()
 
         # figure 2
-        plt.figure("QR ID vs Y deviation")
+        plt.figure("QR ID vs Y deviation").canvas.manager.window.move(750,100)
         plt.plot(range(len(ID)), ID,label="ID")
         plt.plot(range(len(y)), y,label="Y")
         plt.legend(loc="upper right")
@@ -108,28 +104,10 @@ class MyApp(QWidget):
         plt.xlabel('Sample(per semple is 2ms)')
         plt.show()
 
-    def getFilePath(self):
-        file_filter = 'Data File (*.csv)'
-        response = QFileDialog.getOpenFileName(
-            parent=self,
-            caption='Select a data file',
-            directory=os.getcwd(),
-            filter=file_filter,
-            # initialFilter='Excel File (*.xlsx *.xls)'
-        )
-        self.textBox.setText(response[0])
-        self.path = response[0]
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    app.setStyleSheet('''
-        QWidget {
-            font-size: 20px;
-        }
-    ''')
-    
+    app = QApplication(sys.argv)    
     myApp = MyApp()
-    myApp.show()
 
     try:
         sys.exit(app.exec_())
