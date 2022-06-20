@@ -21,7 +21,7 @@ class MyApp(QWidget):
         self.window_width, self.window_height = 800, 200
         self.setMinimumSize(self.window_width, self.window_height)
 
-        # set leyout
+        # set layout
         layout = QVBoxLayout()
         self.setLayout(layout)       
 
@@ -41,6 +41,7 @@ class MyApp(QWidget):
         layout.addWidget(plotButton)
 
     def plot(self):
+        self.path = self.textBox.text()
         print(self.path)
         
     # init
@@ -70,8 +71,8 @@ class MyApp(QWidget):
                 angle_ma.append(numpy.sum(angle[i - ma_frame_size : i]) / ma_frame_size)
 
     # plots
-        # figure 2
-        plt.figure(1)
+        # figure 1
+        plt.figure("All Results")
         plt.subplot(4,1,1) 
         plt.plot(range(len(ID)), ID)
         plt.ylabel('QR ID')
@@ -98,7 +99,7 @@ class MyApp(QWidget):
         plt.show()
 
         # figure 2
-        plt.figure(2)
+        plt.figure("QR ID vs Y deviation")
         plt.plot(range(len(ID)), ID,label="ID")
         plt.plot(range(len(y)), y,label="Y")
         plt.legend(loc="upper right")
@@ -116,15 +117,14 @@ class MyApp(QWidget):
             filter=file_filter,
             # initialFilter='Excel File (*.xlsx *.xls)'
         )
-        self.text.setText(response[0])
-        print(response)
+        self.textBox.setText(response[0])
         self.path = response[0]
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyleSheet('''
         QWidget {
-            font-size: 35px;
+            font-size: 20px;
         }
     ''')
     
