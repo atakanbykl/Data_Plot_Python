@@ -82,7 +82,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QLineEdit" name="pathTextBox">
      <property name="text">
-      <string>C:/Users/Developer/Desktop/project_files/Python/data/33_/velocity/velocity_line3_33_controller_off_2.csv</string>
+      <string>./data/33_/velocity/velocity_line3_33_controller_off_2.csv</string>
      </property>
     </widget>
    </item>

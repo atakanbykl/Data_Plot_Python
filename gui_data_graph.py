@@ -1,4 +1,3 @@
-
 from urllib import response
 import matplotlib.pyplot as plt
 import csv
