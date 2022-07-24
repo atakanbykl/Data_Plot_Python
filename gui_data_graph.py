@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui, uic
 from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout, QLineEdit, QDialog
 import sys
 import os
-import numpy
+import numpy as np
 
 
 # class MyApp(QWidget):
@@ -15,11 +15,11 @@ class MyApp(QDialog):
         super(MyApp, self).__init__() 
         uic.loadUi('gui.ui', self) # Load the .ui file
 
-        self.ID =[]
-        self.angle =[] 
-        self.angle_ma = []
-        self.x = []
-        self.y = []
+        self.ID = np.array([])
+        self.angle = np.array([]) 
+        self.angle_ma = np.array([])
+        self.x = np.array([])
+        self.y = np.array([])
               
         self.pathButton.clicked.connect(self.getFilePath) # get path button         
         self.plotButton.clicked.connect(self.plot) # plot button
@@ -41,13 +41,11 @@ class MyApp(QDialog):
         with open(self.path,"r") as csvfile:
             lines = csv.reader(csvfile, delimiter=',')
             for row in lines:
-                # ID_ = int(re.sub("[^0-9]", "", row[0]))
-                # if lines.line_num < 3: ID.append(ID_)
-                # else: ID.append(ID_ if  ID_ > (ID[lines.line_num - 3] + 50) else ID[lines.line_num - 3])
-                self.ID.append(int(re.sub("[^0-9]", "", row[0])))
-                self.angle.append(float(row[1]))
-                self.x.append(float(row[2]))
-                self.y.append(float(row[3]))
+                self.ID =  np.append(self.ID, int(re.sub("[^0-9]", "", row[0])))
+                self.angle = np.append(self.angle, float(row[1]))
+                self.x = np.append(self.x, float(row[2]))
+                self.y = np.append(self.y, float(row[3]))
+
 
     def movingAverage(self):        
         ma_frame_size = int(self.maTextBox.text())
@@ -55,7 +53,8 @@ class MyApp(QDialog):
             if i < ma_frame_size:
                 pass
             else:
-                self.angle_ma.append(numpy.sum(self.angle[i - ma_frame_size : i]) / ma_frame_size)
+                self.angle_ma = np.append(self.angle_ma , np.sum(self.angle[i - ma_frame_size : i]) / ma_frame_size)
+
 
 
     def plot(self):
