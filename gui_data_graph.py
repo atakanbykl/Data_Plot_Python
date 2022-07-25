@@ -1,6 +1,5 @@
 from urllib import response
 import matplotlib.pyplot as plt
-import csv
 import re
 from PyQt5 import QtCore, QtGui, uic
 from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout, QLineEdit, QDialog
@@ -13,6 +12,8 @@ class MyApp(QDialog):
     def __init__(self):
         super(MyApp, self).__init__()
         uic.loadUi('gui.ui', self) # Load the .ui file
+
+        self.setWindowIcon(QtGui.QIcon('plot_icon_8_Ywb_icon.ico'))
 
         self.pathButton.clicked.connect(self.getFilePath) # get path button
         self.plotButton.clicked.connect(self.plot) # plot button
@@ -28,28 +29,23 @@ class MyApp(QDialog):
             filter=file_filter,
         )
         self.pathTextBox.setText(response[0])
-        self.path = response[0]
 
-    def openFile(self):
-        self.data = pd.read_csv(self.path, names = ["ID","angle","x","y"]) # for pandas
-        self.data = self.data.replace(regex=[r'\D+'], value="").astype(float)
+    def readFile(self):
+        print(self.pathTextBox.text())
+        self.data = pd.read_csv(self.pathTextBox.text(), names = ["ID","angle","x","y"])
+        self.data = self.data.replace(regex=[r'\D+'], value="").astype(float) # remove all non numeric values
 
     def movingAverage(self):
         self.angle_ma = np.array([])
-        angle = np.array([self.data["angle"]])
+        angle = np.array(self.data["angle"])
         ma_frame_size = int(self.maTextBox.text())
-        # for i in  range(len(self.angle)):
+
         for i in  range(len(self.data["angle"])):
-            if i < ma_frame_size:
-                pass
-            else:
-                self.angle_ma = np.append(self.angle_ma , np.sum(angle[0][i - ma_frame_size : i]) / ma_frame_size)
+            if i >= ma_frame_size:
+                self.angle_ma = np.append(self.angle_ma , np.sum(angle[i - ma_frame_size : i]) / ma_frame_size)
 
     def plot(self):
-        self.path = self.pathTextBox.text()
-        print(self.path)
-
-        self.openFile()
+        self.readFile()
         if self.maCheckBox.isChecked(): self.movingAverage()
 
         # plots
