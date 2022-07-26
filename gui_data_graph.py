@@ -13,10 +13,13 @@ class MyApp(QDialog):
         super(MyApp, self).__init__()
         uic.loadUi('gui.ui', self) # Load the .ui file
 
+        self.readDataset("./dataframe_config.json")
+
         self.setWindowIcon(QtGui.QIcon('plot_icon_8_Ywb_icon.ico'))
 
         self.pathButton.clicked.connect(self.getFilePath) # get path button
         self.plotButton.clicked.connect(self.plot) # plot button
+        self.datasetButton.clicked.connect(self.getDataset) # dataset config button
 
         self.show() # Show the GUI
 
@@ -30,9 +33,28 @@ class MyApp(QDialog):
         )
         self.pathTextBox.setText(response[0])
 
+    def getDataset(self):
+        file_filter = 'Data File (*.json)'
+        response = QFileDialog.getOpenFileName(
+            parent=self,
+            caption='Select a dataframe config file',
+            directory=os.getcwd(),
+            filter=file_filter,
+        )
+        self.readDataset(response[0])
+
+    def readDataset(self,pathDataset):
+        self.dataset = pd.read_json(pathDataset)
+        self.datasetList.clear()
+        for ds in self.dataset:
+            self.datasetList.addItem(ds)
+
     def readFile(self):
-        print(self.pathTextBox.text())
-        self.data = pd.read_csv(self.pathTextBox.text(), names = ["ID","angle","x","y"])
+        print(f"Reading data from {self.pathTextBox.text()}")
+        print(f"Selected Dataframe set: {self.datasetList.currentText()}")
+        self.sellectedSet =  self.dataset[self.datasetList.currentText()]["frame"]
+
+        self.data = pd.read_csv(self.pathTextBox.text(), names = self.sellectedSet)
         self.data = self.data.replace(regex=[r'\D+'], value="").astype(float) # remove all non numeric values
 
     def movingAverage(self):
@@ -43,50 +65,23 @@ class MyApp(QDialog):
         for i in  range(len(self.data["angle"])):
             if i >= ma_frame_size:
                 self.angle_ma = np.append(self.angle_ma , np.sum(angle[i - ma_frame_size : i]) / ma_frame_size)
+            plt.plot(self.angle_ma, label = "ma")
 
     def plot(self):
         self.readFile()
-        if self.maCheckBox.isChecked(): self.movingAverage()
 
-        # plots
-        # figure 1
         plt.figure("All Results").canvas.manager.window.move(100,100)
-        plt.subplot(4,1,1)
-        self.data["ID"].plot()
-        plt.ylabel('QR ID')
-        plt.grid()
-
-        plt.subplot(4,1,2)
-        self.data["y"].plot()
-        plt.ylabel('Y Deviation(mm)')
-        plt.grid()
-
-        plt.subplot(4,1,3)
-        self.data["x"].plot()
-        plt.ylabel('X Deviation(mm)')
-        plt.grid()
-
-        plt.subplot(4,1,4)
-        self.data["angle"].plot(label = "raw")
-        if self.maCheckBox.isChecked():
-            plt.plot(range(len(self.angle_ma)), self.angle_ma, label="moving average")
-        plt.legend(loc="upper right")
-        plt.ylabel('Angle(deg)')
-        plt.grid()
-
+        dataQuantity = len(self.sellectedSet)
+        dataCount = 1
+        for dt in self.sellectedSet:
+            plt.subplot(dataQuantity, 1, dataCount)
+            self.data[dt].plot()
+            if self.maCheckBox.isChecked() and dt == "angle": self.movingAverage()
+            plt.ylabel(dt)
+            plt.grid()
+            dataCount = dataCount + 1
         plt.xlabel('Sample(per semple is 2ms)')
         plt.show()
-
-        # figure 2
-        plt.figure("QR ID vs Y deviation").canvas.manager.window.move(750,100)
-        self.data["ID"].plot(label = "ID")
-        self.data["y"].plot(label = "Y")
-        plt.legend(loc="upper right")
-        plt.grid()
-
-        plt.xlabel('Sample(per semple is 2ms)')
-        plt.show()
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

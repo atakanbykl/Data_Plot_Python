@@ -1,0 +1,12 @@
+{
+    "set 1": {
+        "frame" : ["ID","angle","x","y"]
+    },
+
+    "set 2" : {
+        "frame": ["a","b","c","d","e"]
+    },
+    "set 3" : {
+        "frame": ["selam"]
+    }
+}

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>444</width>
-    <height>122</height>
+    <height>136</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -37,27 +37,7 @@
    <bool>false</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="2">
-    <widget class="QPushButton" name="pathButton">
-     <property name="text">
-      <string>Get Path</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QCheckBox" name="maCheckBox">
-     <property name="text">
-      <string>Moving Average Angle</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="tristate">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="3">
+   <item row="1" column="0" colspan="3">
     <widget class="QPushButton" name="plotButton">
      <property name="font">
       <font>
@@ -79,17 +59,23 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLineEdit" name="pathTextBox">
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="maCheckBox">
      <property name="text">
-      <string>./data/33_/velocity/velocity_line3_33_controller_off_2.csv</string>
+      <string>Average Angle</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="tristate">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QLineEdit" name="maTextBox">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
@@ -126,6 +112,37 @@
      </property>
      <property name="readOnly">
       <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QToolButton" name="datasetButton">
+     <property name="text">
+      <string>...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLineEdit" name="pathTextBox">
+     <property name="text">
+      <string>./data/33_/velocity/velocity_line3_33_controller_off_2.csv</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QComboBox" name="datasetList"/>
+   </item>
+   <item row="0" column="3" colspan="2">
+    <widget class="QPushButton" name="pathButton">
+     <property name="text">
+      <string>Get Path</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="5">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
