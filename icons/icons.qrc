@@ -1,6 +1,5 @@
 <RCC>
-    <qresource prefix="/icons">
-        <file>plot_icon_8_Ywb_icon.ico</file>
-    </qresource>
+  <qresource prefix="icons">
+    <file>plot_icon_8_Ywb_icon.ico</file>
+  </qresource>
 </RCC>
-

@@ -1,13 +1,30 @@
+import sys
 from urllib import response
 import matplotlib.pyplot as plt
 import re
 from PyQt5 import QtCore, QtGui, uic
 from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout, QLineEdit, QDialog
 from ui.gui import Ui_Dialog
-import sys
 import os
 import numpy as np
 import pandas as pd
+
+# -1-
+# to create .py ui file
+# - open .ui file in designer
+# - open form menu from upper left 
+# - View Python Code... 
+# - save file with gui.py name
+#
+# -2-
+# required changes when gui.py file updated
+# - PySide2 -> PyQt5
+# - icons_rc -> icons.icons_rc
+#
+# -3-
+# to create rc file from .qrc
+# - pyrcc5 .\icons\icons.qrc -o .\icons\icons_rc.py
+
 
 class MyApp(QDialog):
     def __init__(self):
@@ -19,7 +36,7 @@ class MyApp(QDialog):
 
         self.readDataset("./dataframe_config.json")
 
-        self.setWindowIcon(QtGui.QIcon('./icons/plot_icon_8_Ywb_icon.ico'))
+        # self.setWindowIcon(QtGui.QIcon('./icons/plot_icon_8_Ywb_icon.ico'))
 
         self.ui.pathButton.clicked.connect(self.getFilePath) # get path button
         self.ui.plotButton.clicked.connect(self.plot) # plot button

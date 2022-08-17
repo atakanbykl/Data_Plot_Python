@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'guikCvkeR.ui'
+## Form generated from reading UI file 'guiUTQPKR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.14.1
 ##
@@ -15,6 +15,7 @@ from PyQt5.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QRadialGradient)
 from PyQt5.QtWidgets import *
 
+import icons.icons_rc
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -27,6 +28,9 @@ class Ui_Dialog(object):
         font = QFont()
         font.setStrikeOut(False)
         Dialog.setFont(font)
+        icon = QIcon()
+        icon.addFile(u":/icons/icons/plot_icon_8_Ywb_icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        Dialog.setWindowIcon(icon)
         Dialog.setSizeGripEnabled(False)
         self.gridLayout = QGridLayout(Dialog)
         self.gridLayout.setObjectName(u"gridLayout")

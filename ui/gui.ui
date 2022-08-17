@@ -33,6 +33,10 @@
   <property name="windowTitle">
    <string>Data Plot</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icons.qrc">
+    <normaloff>:/icons/icons/plot_icon_8_Ywb_icon.ico</normaloff>:/icons/icons/plot_icon_8_Ywb_icon.ico</iconset>
+  </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
@@ -148,7 +152,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>maCheckBox</sender>
