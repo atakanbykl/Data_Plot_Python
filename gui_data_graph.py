@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import re
 from PyQt5 import QtCore, QtGui, uic
 from PyQt5.QtWidgets import QApplication, QWidget, QComboBox, QPushButton, QFileDialog, QVBoxLayout, QLineEdit, QDialog
-from gui import Ui_Dialog
+from ui.gui import Ui_Dialog
 import sys
 import os
 import numpy as np
@@ -19,7 +19,7 @@ class MyApp(QDialog):
 
         self.readDataset("./dataframe_config.json")
 
-        self.setWindowIcon(QtGui.QIcon('plot_icon_8_Ywb_icon.ico'))
+        self.setWindowIcon(QtGui.QIcon('./icons/plot_icon_8_Ywb_icon.ico'))
 
         self.ui.pathButton.clicked.connect(self.getFilePath) # get path button
         self.ui.plotButton.clicked.connect(self.plot) # plot button
