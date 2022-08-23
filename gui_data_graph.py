@@ -1,3 +1,25 @@
+############################################################
+## -1-
+## to create .py ui file
+## - open .ui file in designer
+## - open form menu from upper left 
+## - View Python Code... 
+## - save file with gui.py name
+##
+## -2-
+## required changes when gui.py file updated
+## - PySide2 -> PyQt5
+## - icons_rc -> icons.icons_rc
+##
+## -3-
+## to create rc file from .qrc
+## - pyrcc5 .\icons\icons.qrc -o .\icons\icons_rc.py
+##
+## -4-
+## to make this program executable
+## - pyinstaller -F -w -i ./icons/icon.ico gui_data_graph.py
+##############################################################
+
 import sys
 from urllib import response
 import matplotlib.pyplot as plt
@@ -9,23 +31,6 @@ import os
 import numpy as np
 import pandas as pd
 
-# -1-
-# to create .py ui file
-# - open .ui file in designer
-# - open form menu from upper left 
-# - View Python Code... 
-# - save file with gui.py name
-#
-# -2-
-# required changes when gui.py file updated
-# - PySide2 -> PyQt5
-# - icons_rc -> icons.icons_rc
-#
-# -3-
-# to create rc file from .qrc
-# - pyrcc5 .\icons\icons.qrc -o .\icons\icons_rc.py
-
-
 class MyApp(QDialog):
     def __init__(self):
         super(MyApp, self).__init__()
@@ -35,8 +40,6 @@ class MyApp(QDialog):
         self.ui.setupUi(self)
 
         self.readDataset("./dataframe_config.json")
-
-        # self.setWindowIcon(QtGui.QIcon('./icons/plot_icon_8_Ywb_icon.ico'))
 
         self.ui.pathButton.clicked.connect(self.getFilePath) # get path button
         self.ui.plotButton.clicked.connect(self.plot) # plot button

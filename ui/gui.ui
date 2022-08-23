@@ -34,7 +34,7 @@
    <string>Data Plot</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
+   <iconset>
     <normaloff>:/icons/icons/plot_icon_8_Ywb_icon.ico</normaloff>:/icons/icons/plot_icon_8_Ywb_icon.ico</iconset>
   </property>
   <property name="sizeGripEnabled">
@@ -153,7 +153,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="icons.qrc"/>
+  <include location="../icons/icons.qrc"/>
  </resources>
  <connections>
   <connection>
